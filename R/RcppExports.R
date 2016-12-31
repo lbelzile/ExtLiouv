@@ -24,6 +24,7 @@ MarginalTransformation <- function(data, u, lambda, scale, shape, GEVorGP = TRUE
 #' @param threshold vector of thresholds under which observations are censored
 #' @return matrix of logical indicating whether or not observations lie above the marginal threshold
 #' @keywords internal
+#' @export
 isAbove <- function(data, threshold) {
     .Call('demoroutines_isAbove', PACKAGE = 'demoroutines', data, threshold)
 }

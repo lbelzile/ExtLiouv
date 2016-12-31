@@ -61,6 +61,7 @@ List MarginalTransformation(NumericMatrix data, NumericVector u, NumericVector l
 //' @param threshold vector of thresholds under which observations are censored
 //' @return matrix of logical indicating whether or not observations lie above the marginal threshold
 //' @keywords internal
+//' @export
 // [[Rcpp::export]]
 LogicalMatrix isAbove(NumericMatrix data, NumericVector threshold){
   if(data.ncol() != threshold.size()){

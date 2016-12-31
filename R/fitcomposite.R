@@ -3,6 +3,8 @@
 #' This function takes as argument the parameters of the scaled Dirichlet bivariate distribution
 #' and passes them to the C++ function.
 #'
+#' @useDynLib demoroutines
+#' @importFrom Rcpp evalCpp
 #' @param optpar vector of parameters over which to optimize
 #' @param fixedpar vector of parameters to keep constant
 #' @param wfixed is vector of int with indices of data points
@@ -206,6 +208,14 @@ nllopthr <- function(optpar, fixedpar, wfixed, numpar, transform=FALSE, dat, thi
 #' @importFrom stats optim var
 #' @importFrom numDeriv hessian
 #' @importFrom mev gp.fit
+#'
+#' @examples
+#' x <- mev::rmev(n=100000, d=2, param=c(1,2,0.5), model = "negdir")
+#' qu <- apply(x, 2, quantile,probs <- 0.99)
+#' y <- x[which(rowSums(isAbove(x,threshold = qu))>=1),]
+#' fit <- fmvcpot(dat=x, u=qu,model="negdir",lambda=colSums(isAbove(y,qu))/(nrow(x)+1), N=nrow(x),
+#'                cscale=TRUE, cshape=TRUE, shape=1, scale=100)
+#' fit$par
 fmvcpot <- function(dat, u, lambda, N, model=c("ct","dir","negdir","hr"), cscale=FALSE, cshape=FALSE,
                       sym=FALSE, start=NULL, std.err=TRUE, method="BFGS", warn.inf=TRUE,...){
   #@TODO handle missing values in some of the vector (not sure it works) 06.10.2016

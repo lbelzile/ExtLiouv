@@ -1,0 +1,19 @@
+Package: demoroutines
+Type: Package
+Title: Functions for 'Extremal attractor of Liouville copulas'
+Version: 2016.12.31
+Author: Leo Belzile
+Maintainer: <leo.belzile@epfl.ch>
+Description: Functions to estimate peaks-over-threshold data from scaled
+    Dirichlet and negative Dirichlet extremal models
+License: GPL-2
+Encoding: UTF-8
+LazyData: true
+URL: https://github.com/lbelzile/mev/
+Imports:
+    evd,
+    ismev,
+    Rcpp (>= 0.11.6),
+    stats
+LinkingTo: Rcpp, RcppArmadillo
+RoxygenNote: 5.0.1

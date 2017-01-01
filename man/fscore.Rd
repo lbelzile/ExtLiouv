@@ -15,6 +15,9 @@ fscore(start, dat, model, p = 1)
 
 \item{p}{int specifying the degree of the \eqn{l_p} norm used in the weight function \code{weightFun}}
 }
+\value{
+the optimized parameter values
+}
 \description{
 Optimization routine to fit a member of the extremal Dirichlet family
 using the gradient score

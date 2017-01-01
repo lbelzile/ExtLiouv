@@ -19,7 +19,7 @@
 #' @keywords internal
 nlloptdir <- function(optpar, fixedpar, wfixed, numpar, transform=FALSE, dat, thid, N, lambda, u) {
 	if((length(optpar)+length(fixedpar))!=sum(numpar)){
-		stop("Invalid arguments passed to function `nllmvctopt'; please check")
+		stop("Invalid arguments passed to function `nlloptdir'; please check")
 	}
 	#Transform the parameters if they are to be optimized (otherwise, don't)
 	if(1 %in% wfixed){  mscale = fixedpar[1:numpar[1]]; fixedpar <- fixedpar[-(1:numpar[1])]
@@ -61,7 +61,7 @@ nlloptdir <- function(optpar, fixedpar, wfixed, numpar, transform=FALSE, dat, th
 #' @keywords internal
 nlloptnegdir <- function(optpar, fixedpar, wfixed, numpar, transform=FALSE, dat, thid, N, lambda, u) {
   if((length(optpar)+length(fixedpar))!=sum(numpar)){
-    stop("Invalid arguments passed to function `nllmvctopt'; please check")
+    stop("Invalid arguments passed to function `nlloptnegdir'; please check")
   }
   #Transform the parameters if they are to be optimized (otherwise, don't)
   if(1 %in% wfixed){  mscale = fixedpar[1:numpar[1]]; fixedpar <- fixedpar[-(1:numpar[1])]
@@ -156,7 +156,7 @@ Lambda2Sigma <- function(Lambda){
 #' @keywords internal
 nllopthr <- function(optpar, fixedpar, wfixed, numpar, transform=FALSE, dat, thid, N, lambda, u) {
 	if((length(optpar)+length(fixedpar))!=sum(numpar)){
-		stop("Invalid arguments passed to function `nllmvhropt'; please check")
+		stop("Invalid arguments passed to function `nllopthr'; please check")
 	}
 	#Transform the parameters if they are to be optimized (otherwise, don't)
 	if(1 %in% wfixed){  mscale <- fixedpar[1:numpar[1]]; fixedpar <- fixedpar[-(1:numpar[1])]
@@ -227,7 +227,7 @@ fmvcpot <- function(dat, u, lambda, N, model=c("ct","dir","negdir","hr"), cscale
   if(missing(lambda)){ #sep.bvdata does this automatically
     lambda <- sapply(1:ncol(dat), function(ind){sum(dat[,ind]>u[ind])/(nrow(dat)+1)})
   }
-  if(model=="ct"){ model="dir"}
+  #if(model=="ct"){ model="dir"}
   if(missing(N)){ N <- nrow(dat)}
   thid <- isAbove(dat, u)
   nulls <- which(rowSums(thid)==0)
@@ -243,7 +243,7 @@ fmvcpot <- function(dat, u, lambda, N, model=c("ct","dir","negdir","hr"), cscale
   #Define name of parameters to be optimized - will automatically match `nm',
   #but recall `start' may be provided by user
   param <- c("scale", "shape")
-  if(model %in% c("dir","negdir")){ #Currently the only case, but could be changed latter.
+  if(model %in% c("ct","dir","negdir")){
     param <- c(param, "alpha","rho")
     numpar <- c(ifelse(cscale,1,ncol(dat)),ifelse(cshape,1,ncol(dat)),ifelse(sym,1,ncol(dat)), 1)
   } else if(model=="hr"){
@@ -252,6 +252,10 @@ fmvcpot <- function(dat, u, lambda, N, model=c("ct","dir","negdir","hr"), cscale
   }
   nmdots <- names(list(...))
   fixed.param <- list(...)[nmdots %in% param]
+  if(model=="ct"){
+    fixed.param[['rho']] <- 1;
+    model <- "dir"
+  }
   #Define starting values (if not provided by the user)
   if (is.null(start)) {#default
     start <- composite_pot_startvals(x=dat, u=u, model=model, sym=sym, cscale=cscale,
@@ -271,17 +275,17 @@ fmvcpot <- function(dat, u, lambda, N, model=c("ct","dir","negdir","hr"), cscale
   fixed <- c()
   wfixed <- c()
   if("scale" %in% nmdots){
-    fixed <- c(fixed,as.vector(list(...)['scale']))
+    fixed <- c(fixed,as.vector(fixed.param['scale']))
     start$scale <- NULL
-    if(length(unlist(list(...)['scale']))!=numpar[1]){
+    if(length(unlist(fixed.param['scale']))!=numpar[1]){
       stop("Invalid scale parameter: it does not match the constraint provided.")
     }
     wfixed <- c(wfixed, 1)
   }
   if("shape" %in% nmdots){
-    fixed <- c(fixed,as.vector(list(...)['shape']))
+    fixed <- c(fixed,as.vector(fixed.param['shape']))
     start$shape <- NULL
-    if(length(unlist(list(...)['shape']))!=numpar[2]){
+    if(length(unlist(fixed.param['shape']))!=numpar[2]){
       stop("Invalid shape parameter: it does not match the constraint provided.")
     }
     wfixed <- c(wfixed, 2)
@@ -289,9 +293,9 @@ fmvcpot <- function(dat, u, lambda, N, model=c("ct","dir","negdir","hr"), cscale
   #Model specific arguments
   if(model %in% c("dir","negdir")){
     if("alpha" %in% nmdots){
-      fixed <- c(fixed,as.vector(list(...)['alpha']))
+      fixed <- c(fixed,as.vector(fixed.param['alpha']))
       start$alpha <- NULL
-      if(length(unlist(list(...)['alpha']))!=numpar[3]){
+      if(length(unlist(fixed.param['alpha']))!=numpar[3]){
         stop("Invalid `alpha' parameter provided")
       }
       wfixed <- c(wfixed, 3)

@@ -92,11 +92,12 @@ scoreEstimation <- function(dat, model, weightFun, dWeightFun, alpha, rho, u, p=
 #'
 #' Optimization routine to fit a member of the extremal Dirichlet family
 #' using the gradient score
-#'
+#' @export 
 #' @param start starting values for the parameter (\eqn{alpha} and \eqn{rho}, in this order)
 #' @param dat matrix of transformed data on unit Pareto scale lying above the threshold
 #' @param model string indicating whether the \code{"dir"} or \code{"negdir"} model should be considered
 #' @param p int specifying the degree of the \eqn{l_p} norm used in the weight function \code{weightFun}
+#' @return the optimized parameter values
 fscore <- function(start, dat, model, p=1){
   optim.score <- function(par, dat, model, p=1){
       alpha <- exp(par[-length(par)])
@@ -105,7 +106,7 @@ fscore <- function(start, dat, model, p=1){
       if(min(par)!=par[length(par)]){
         return(1e10)
       }
-      scoreEstimationDir(dat=dat, model = model, weightFun = weightFun, dWeightFun = dWeightFun, p=p, u=u, alpha=alpha, rho=rho)
+      scoreEstimation(dat=dat, model = model, weightFun = weightFun, dWeightFun = dWeightFun, p=p, u=u, alpha=alpha, rho=rho)
     }
   #Routine
   sums <- apply(dat, 1, lpnorm, p=p)

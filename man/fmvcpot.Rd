@@ -50,7 +50,7 @@ It returns a list with the result from \code{\link[stats]{optim}}
 along with some of the information passed to the function.
 }
 \examples{
-x <- rmev(n=100000, d=2, param=parame, model = "negdir")
+x <- mev::rmev(n=100000, d=2, param=c(1,2,0.5), model = "negdir")
 qu <- apply(x, 2, quantile,probs <- 0.99)
 y <- x[which(rowSums(isAbove(x,threshold = qu))>=1),]
 fit <- fmvcpot(dat=x, u=qu,model="negdir",lambda=colSums(isAbove(y,qu))/(nrow(x)+1), N=nrow(x),

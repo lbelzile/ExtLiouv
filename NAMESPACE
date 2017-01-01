@@ -3,6 +3,7 @@
 export(MarginalTransformation)
 export(compositemat)
 export(fmvcpot)
+export(fscore)
 export(isAbove)
 export(nllmvexstud)
 export(nllmvhr)

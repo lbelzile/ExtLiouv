@@ -1,19 +1,16 @@
-Package: demoroutines
+Package: ExtLiouv
 Type: Package
 Title: Functions for 'Extremal attractor of Liouville copulas'
-Version: 2016.12.31
+Version: 2017.01.24
 Author: Leo Belzile
 Maintainer: <leo.belzile@epfl.ch>
 Description: Functions to estimate peaks-over-threshold data from scaled
-    Dirichlet and negative Dirichlet extremal models
+    Dirichlet and negative Dirichlet extremal models. Composite likelihood 
+    estimation for unstructured Husler-Reiss and extremal student models.
 License: GPL-2
 Encoding: UTF-8
 LazyData: true
-URL: https://github.com/lbelzile/mev/
-Imports:
-    evd,
-    ismev,
-    Rcpp (>= 0.11.6),
-    stats
+URL: https://github.com/lbelzile/ExtLiouv/
+Imports: evd, ismev, Rcpp (>= 0.11.6), stats, numDeriv, mev
 LinkingTo: Rcpp, RcppArmadillo
 RoxygenNote: 5.0.1

@@ -4,7 +4,7 @@
 \alias{fscore}
 \title{Fit Dirichlet extremal model using the gradient score}
 \usage{
-fscore(start, dat, model, p = 1)
+fscore(start, dat, model, p = 1, qu = 0.9, exceed = FALSE)
 }
 \arguments{
 \item{start}{starting values for the parameter (\eqn{alpha} and \eqn{rho}, in this order)}
@@ -14,6 +14,10 @@ fscore(start, dat, model, p = 1)
 \item{model}{string indicating whether the \code{"dir"} or \code{"negdir"} model should be considered}
 
 \item{p}{int specifying the degree of the \eqn{l_p} norm used in the weight function \code{weightFun}}
+
+\item{qu}{probability level for the marginal quantile for the sum}
+
+\item{exceed}{logical indicating whether the data provided is the exceedances. Default to \code{FALSE}.}
 }
 \value{
 the optimized parameter values
@@ -21,5 +25,9 @@ the optimized parameter values
 \description{
 Optimization routine to fit a member of the extremal Dirichlet family
 using the gradient score
+}
+\examples{
+samp <- mev::rmev(n=2500,d=3,param=c(1,2,3,0.5),model="negdir")
+fscore(start=c(1,2,3,0.5), dat=samp, model="negdir")
 }
 

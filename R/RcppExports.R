@@ -13,7 +13,7 @@
 #' @param GEVorGP logical indicating whether to transform to unit Frechet or unit Pareto. Default to \code{true} (GEV).
 #' @export
 MarginalTransformation <- function(data, u, lambda, scale, shape, GEVorGP = TRUE) {
-    .Call('demoroutines_MarginalTransformation', PACKAGE = 'demoroutines', data, u, lambda, scale, shape, GEVorGP)
+    .Call('ExtLiouv_MarginalTransformation', PACKAGE = 'ExtLiouv', data, u, lambda, scale, shape, GEVorGP)
 }
 
 #' Indicates whether observations lie above the threshold.
@@ -26,7 +26,7 @@ MarginalTransformation <- function(data, u, lambda, scale, shape, GEVorGP = TRUE
 #' @keywords internal
 #' @export
 isAbove <- function(data, threshold) {
-    .Call('demoroutines_isAbove', PACKAGE = 'demoroutines', data, threshold)
+    .Call('ExtLiouv_isAbove', PACKAGE = 'ExtLiouv', data, threshold)
 }
 
 #' Negative log-likelihood of scaled Dirichlet extreme value model
@@ -50,7 +50,7 @@ isAbove <- function(data, threshold) {
 #' would otherwise be `incorrect'.
 #' @export
 nllmvsdir <- function(y, thid, N, lambda, u, alpha, rho, scale, shape) {
-    .Call('demoroutines_nllmvsdir', PACKAGE = 'demoroutines', y, thid, N, lambda, u, alpha, rho, scale, shape)
+    .Call('ExtLiouv_nllmvsdir', PACKAGE = 'ExtLiouv', y, thid, N, lambda, u, alpha, rho, scale, shape)
 }
 
 #' Negative log-likelihood of scaled negative Dirichlet extreme value model
@@ -74,7 +74,7 @@ nllmvsdir <- function(y, thid, N, lambda, u, alpha, rho, scale, shape) {
 #' would otherwise be `incorrect'.
 #' @export
 nllmvsnegdir <- function(y, thid, N, lambda, u, alpha, rho, scale, shape) {
-    .Call('demoroutines_nllmvsnegdir', PACKAGE = 'demoroutines', y, thid, N, lambda, u, alpha, rho, scale, shape)
+    .Call('ExtLiouv_nllmvsnegdir', PACKAGE = 'ExtLiouv', y, thid, N, lambda, u, alpha, rho, scale, shape)
 }
 
 #' Negative log-likelihood of Husler-Reiss model
@@ -97,7 +97,7 @@ nllmvsnegdir <- function(y, thid, N, lambda, u, alpha, rho, scale, shape) {
 #' would otherwise be `incorrect'.
 #' @export
 nllmvhr <- function(y, thid, N, lambda, u, Lambda, scale, shape) {
-    .Call('demoroutines_nllmvhr', PACKAGE = 'demoroutines', y, thid, N, lambda, u, Lambda, scale, shape)
+    .Call('ExtLiouv_nllmvhr', PACKAGE = 'ExtLiouv', y, thid, N, lambda, u, Lambda, scale, shape)
 }
 
 #' Negative log-likelihood of extremal Student model
@@ -119,8 +119,8 @@ nllmvhr <- function(y, thid, N, lambda, u, Lambda, scale, shape) {
 #' observations stripped from their contribution; in such cases, the count
 #' would otherwise be `incorrect'.
 #' @export
-nllmvexstud <- function(y, thid, N, lambda, u, Rho, nu, scale, shape) {
-    .Call('demoroutines_nllmvexstud', PACKAGE = 'demoroutines', y, thid, N, lambda, u, Rho, nu, scale, shape)
+nllmvxstud <- function(y, thid, N, lambda, u, Rho, nu, scale, shape) {
+    .Call('ExtLiouv_nllmvxstud', PACKAGE = 'ExtLiouv', y, thid, N, lambda, u, Rho, nu, scale, shape)
 }
 
 #' Spectral density of scaled Dirichlet and negative Dirichlet extreme value distributions
@@ -131,9 +131,9 @@ nllmvexstud <- function(y, thid, N, lambda, u, Rho, nu, scale, shape) {
 #' @param transform logical indicating whether parameters are on the log scale. Default to \code{TRUE}
 #'
 #' @details The function is provided as a wrapper and takes parameters on the log scale for \eqn{\alpha} (\eqn{\rho}).
-#' @return the log-density for the \code{n} sample
+#' @return the log-likelihood for the \code{n} sample
 .dirspecdens <- function(param, dat, d, transform = TRUE) {
-    .Call('demoroutines_dirspecdens', PACKAGE = 'demoroutines', param, dat, d, transform)
+    .Call('ExtLiouv_dirspecdens', PACKAGE = 'ExtLiouv', param, dat, d, transform)
 }
 
 #' Spectral density of scaled negative Dirichlet extreme value distribution
@@ -144,9 +144,9 @@ nllmvexstud <- function(y, thid, N, lambda, u, Rho, nu, scale, shape) {
 #' @param transform logical indicating whether parameters are on the log scale. Default to \code{TRUE}
 #'
 #' @details The function is provided as a wrapper and takes parameters on the log scale for \eqn{\alpha} and \eqn{\rho}.
-#' @return the log-density for the \code{n} sample
+#' @return the log-likelihood for the \code{n} sample
 .negdirspecdens <- function(param, dat, d, transform = TRUE) {
-    .Call('demoroutines_negdirspecdens', PACKAGE = 'demoroutines', param, dat, d, transform)
+    .Call('ExtLiouv_negdirspecdens', PACKAGE = 'ExtLiouv', param, dat, d, transform)
 }
 
 #' Spectral density of Coles and Tawn extreme value distribution
@@ -154,8 +154,8 @@ nllmvexstud <- function(y, thid, N, lambda, u, Rho, nu, scale, shape) {
 #' @param param vector containing the parameters \eqn{\alpha}.
 #' @param dat matrix of pseudo-dat, of dimension \eqn{d}
 #' @param transform logical indicating whether parameters are on the log scale. Default to \code{TRUE}
-#' @return the value of the log spectral density for a sample of size \code{n}
+#' @return the value of the log likelihood for a sample of size \code{n}
 .ctspecdens <- function(param, dat, transform = TRUE) {
-    .Call('demoroutines_ctspecdens', PACKAGE = 'demoroutines', param, dat, transform)
+    .Call('ExtLiouv_ctspecdens', PACKAGE = 'ExtLiouv', param, dat, transform)
 }
 

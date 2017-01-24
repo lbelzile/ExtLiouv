@@ -8,7 +8,7 @@ using namespace Rcpp;
 
 // MarginalTransformation
 List MarginalTransformation(NumericMatrix data, NumericVector u, NumericVector lambda, NumericVector scale, NumericVector shape, bool GEVorGP);
-RcppExport SEXP demoroutines_MarginalTransformation(SEXP dataSEXP, SEXP uSEXP, SEXP lambdaSEXP, SEXP scaleSEXP, SEXP shapeSEXP, SEXP GEVorGPSEXP) {
+RcppExport SEXP ExtLiouv_MarginalTransformation(SEXP dataSEXP, SEXP uSEXP, SEXP lambdaSEXP, SEXP scaleSEXP, SEXP shapeSEXP, SEXP GEVorGPSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -24,7 +24,7 @@ END_RCPP
 }
 // isAbove
 LogicalMatrix isAbove(NumericMatrix data, NumericVector threshold);
-RcppExport SEXP demoroutines_isAbove(SEXP dataSEXP, SEXP thresholdSEXP) {
+RcppExport SEXP ExtLiouv_isAbove(SEXP dataSEXP, SEXP thresholdSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -36,7 +36,7 @@ END_RCPP
 }
 // nllmvsdir
 NumericVector nllmvsdir(NumericMatrix y, LogicalMatrix thid, int N, NumericVector lambda, NumericVector u, NumericVector alpha, double rho, NumericVector scale, NumericVector shape);
-RcppExport SEXP demoroutines_nllmvsdir(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP alphaSEXP, SEXP rhoSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
+RcppExport SEXP ExtLiouv_nllmvsdir(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP alphaSEXP, SEXP rhoSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -55,7 +55,7 @@ END_RCPP
 }
 // nllmvsnegdir
 NumericVector nllmvsnegdir(NumericMatrix y, LogicalMatrix thid, int N, NumericVector lambda, NumericVector u, NumericVector alpha, double rho, NumericVector scale, NumericVector shape);
-RcppExport SEXP demoroutines_nllmvsnegdir(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP alphaSEXP, SEXP rhoSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
+RcppExport SEXP ExtLiouv_nllmvsnegdir(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP alphaSEXP, SEXP rhoSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -74,7 +74,7 @@ END_RCPP
 }
 // nllmvhr
 NumericVector nllmvhr(NumericMatrix y, LogicalMatrix thid, int N, NumericVector lambda, NumericVector u, NumericMatrix Lambda, NumericVector scale, NumericVector shape);
-RcppExport SEXP demoroutines_nllmvhr(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP LambdaSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
+RcppExport SEXP ExtLiouv_nllmvhr(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP LambdaSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -90,9 +90,9 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
-// nllmvexstud
-NumericVector nllmvexstud(NumericMatrix y, LogicalMatrix thid, int N, NumericVector lambda, NumericVector u, NumericMatrix Rho, double nu, NumericVector scale, NumericVector shape);
-RcppExport SEXP demoroutines_nllmvexstud(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP RhoSEXP, SEXP nuSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
+// nllmvxstud
+NumericVector nllmvxstud(NumericMatrix y, LogicalMatrix thid, int N, NumericVector lambda, NumericVector u, NumericMatrix Rho, double nu, NumericVector scale, NumericVector shape);
+RcppExport SEXP ExtLiouv_nllmvxstud(SEXP ySEXP, SEXP thidSEXP, SEXP NSEXP, SEXP lambdaSEXP, SEXP uSEXP, SEXP RhoSEXP, SEXP nuSEXP, SEXP scaleSEXP, SEXP shapeSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -105,13 +105,13 @@ BEGIN_RCPP
     Rcpp::traits::input_parameter< double >::type nu(nuSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type scale(scaleSEXP);
     Rcpp::traits::input_parameter< NumericVector >::type shape(shapeSEXP);
-    rcpp_result_gen = Rcpp::wrap(nllmvexstud(y, thid, N, lambda, u, Rho, nu, scale, shape));
+    rcpp_result_gen = Rcpp::wrap(nllmvxstud(y, thid, N, lambda, u, Rho, nu, scale, shape));
     return rcpp_result_gen;
 END_RCPP
 }
 // dirspecdens
 NumericVector dirspecdens(NumericVector param, NumericMatrix dat, int d, bool transform);
-RcppExport SEXP demoroutines_dirspecdens(SEXP paramSEXP, SEXP datSEXP, SEXP dSEXP, SEXP transformSEXP) {
+RcppExport SEXP ExtLiouv_dirspecdens(SEXP paramSEXP, SEXP datSEXP, SEXP dSEXP, SEXP transformSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -125,7 +125,7 @@ END_RCPP
 }
 // negdirspecdens
 NumericVector negdirspecdens(NumericVector param, NumericMatrix dat, int d, bool transform);
-RcppExport SEXP demoroutines_negdirspecdens(SEXP paramSEXP, SEXP datSEXP, SEXP dSEXP, SEXP transformSEXP) {
+RcppExport SEXP ExtLiouv_negdirspecdens(SEXP paramSEXP, SEXP datSEXP, SEXP dSEXP, SEXP transformSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;
@@ -139,7 +139,7 @@ END_RCPP
 }
 // ctspecdens
 NumericVector ctspecdens(NumericVector param, NumericMatrix dat, bool transform);
-RcppExport SEXP demoroutines_ctspecdens(SEXP paramSEXP, SEXP datSEXP, SEXP transformSEXP) {
+RcppExport SEXP ExtLiouv_ctspecdens(SEXP paramSEXP, SEXP datSEXP, SEXP transformSEXP) {
 BEGIN_RCPP
     Rcpp::RObject rcpp_result_gen;
     Rcpp::RNGScope rcpp_rngScope_gen;

@@ -5,7 +5,7 @@
 \title{Wrapper for the scaled negative extremal Dirichlet model}
 \usage{
 nlloptnegdir(optpar, fixedpar, wfixed, numpar, transform = FALSE, dat, thid,
-  N, lambda, u)
+  N, lambda, u, datmarg)
 }
 \arguments{
 \item{optpar}{vector of parameters over which to optimize}

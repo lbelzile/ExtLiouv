@@ -4,9 +4,9 @@
 \alias{fmvcpot}
 \title{Pairwise composite likelihood estimation for peaks-over-threshold}
 \usage{
-fmvcpot(dat, u, lambda, N, model = c("ct", "dir", "negdir", "hr"),
-  cscale = FALSE, cshape = FALSE, sym = FALSE, start = NULL,
-  std.err = TRUE, method = "BFGS", warn.inf = TRUE, ...)
+fmvcpot(dat, u, lambda, N, model = c("log", "neglog", "ct", "dir", "negdir",
+  "hr", "xstud"), cscale = FALSE, cshape = FALSE, sym = FALSE,
+  start = NULL, std.err = TRUE, method = "BFGS", warn.inf = TRUE, ...)
 }
 \arguments{
 \item{dat}{\code{n} by \code{d} data matrix on original scale}
@@ -35,9 +35,6 @@ fmvcpot(dat, u, lambda, N, model = c("ct", "dir", "negdir", "hr"),
 
 \item{...}{additional arguments (fixed parameters) passed to the \code{optim}
 function to be held fixed during the optimization}
-
-\item{transform}{logical indicating whether to perform optimization on unconstrained
-space; \code{start} should be adjusted if \code{transform=TRUE}}
 }
 \value{
 a list containing the output of \code{\link[stats]{optim}}, notably
@@ -49,12 +46,27 @@ for multivariate extreme value models based on pairs of data.
 It returns a list with the result from \code{\link[stats]{optim}}
 along with some of the information passed to the function.
 }
+\section{Warning}{
+ users should strip the data matrix from full \code{NA} cases or else provide \code{N}.
+While these will be ignored in the routine, they are taken into account in the calculation of the total number of
+non exceedances.
+}
 \examples{
-x <- mev::rmev(n=100000, d=2, param=c(1,2,0.5), model = "negdir")
+set.seed(4)
+x <- mev::rmev(n=10000, d=2, param=c(1,2,0.5), model = "negdir")
 qu <- apply(x, 2, quantile,probs <- 0.99)
 y <- x[which(rowSums(isAbove(x,threshold = qu))>=1),]
-fit <- fmvcpot(dat=x, u=qu,model="negdir",lambda=colSums(isAbove(y,qu))/(nrow(x)+1), N=nrow(x),
+fit <- fmvcpot(dat=y, u=qu, model="negdir",lambda=colSums(isAbove(y,qu))/(nrow(x)+1), N=nrow(x),
                cscale=TRUE, cshape=TRUE, shape=1, scale=100)
 fit$par
+x <- mev::rmev(n=10000, d=2, param=c(1,2,0.5), model = "dir")
+qu <- apply(x, 2, quantile,probs <- 0.99)
+y <- x[which(rowSums(isAbove(x,threshold = qu))>=1),]
+fit <- fmvcpot(dat=y, u=qu, model="dir",lambda=colSums(isAbove(y,qu))/(nrow(x)+1), N=nrow(x),
+               cscale=TRUE, cshape=TRUE, shape=1, scale=100)
+fit$par
+}
+\author{
+Leo Belzile, some Cpp code by Adrien de Casto and Leonid Rousniak for `hr' and `xstud' models
 }
 

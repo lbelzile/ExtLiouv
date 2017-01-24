@@ -31,12 +31,14 @@ dWeightFun <- function(x, u, p){
 
 #Gradient of spectral log-likelihood for the scaled negative extremal Dirichlet model
 gradient.negdir <- function(x, alpha, rho){
+  logA <- lgamma(alpha-rho)-lgamma(alpha)
   (sum(alpha)-rho)*exp(-logA/rho-(1/rho+1)*log(x))/
     (rho*sum(exp(-(logA+log(x))/rho)))-(alpha/rho+1)/x
 }
 
 #Gradient of spectral log-likelihood for the scaled extremal Dirichlet model
 gradient.dir <- function(x, alpha, rho){
+  logC <- lgamma(alpha+rho)-lgamma(alpha)
   -(sum(alpha)+rho)*exp(logC/rho+(1/rho-1)*log(x))/
     (rho*sum(exp((logC+log(x))/rho)))+(alpha/rho-1)/x
 }
@@ -92,25 +94,36 @@ scoreEstimation <- function(dat, model, weightFun, dWeightFun, alpha, rho, u, p=
 #'
 #' Optimization routine to fit a member of the extremal Dirichlet family
 #' using the gradient score
-#' @export 
+#' @export
 #' @param start starting values for the parameter (\eqn{alpha} and \eqn{rho}, in this order)
 #' @param dat matrix of transformed data on unit Pareto scale lying above the threshold
 #' @param model string indicating whether the \code{"dir"} or \code{"negdir"} model should be considered
 #' @param p int specifying the degree of the \eqn{l_p} norm used in the weight function \code{weightFun}
+#' @param qu probability level for the marginal quantile for the sum
+#' @param exceed logical indicating whether the data provided is the exceedances. Default to \code{FALSE}.
 #' @return the optimized parameter values
-fscore <- function(start, dat, model, p=1){
-  optim.score <- function(par, dat, model, p=1){
+#' @examples
+#' samp <- mev::rmev(n=2500,d=3,param=c(1,2,3,0.5),model="negdir")
+#' fscore(start=c(1,2,3,0.5), dat=samp, model="negdir")
+fscore <- function(start, dat, model, p=1, qu=0.9, exceed=FALSE){
+  optim.score <- function(par, dat, model, u, p=1){
       alpha <- exp(par[-length(par)])
       rho <- exp(par[length(par)])
+      if(any(alpha>100) || rho < 0 || rho > 5){return(1e30)}
       #Invalid parameter value
       if(min(par)!=par[length(par)]){
-        return(1e10)
+        return(1e30)
       }
       scoreEstimation(dat=dat, model = model, weightFun = weightFun, dWeightFun = dWeightFun, p=p, u=u, alpha=alpha, rho=rho)
     }
   #Routine
+  if(exceed){
+    opt.out <- optim(par=log(start),fn=optim.score, dat=dat, model=model, p=p, u=u, control=list(fnscale=1,maxit=1500))
+  } else{
   sums <- apply(dat, 1, lpnorm, p=p)
-  exceedances <- dat[sums > quantile(sums, 0.9),]
-  opt.out <- optim(par=log(start),fn=optim.score, dat=exceedances, model=model, p=p, control=list(fnscale=1,maxit=1500))
-  return (exp(opt.out$par))
+  u <- quantile(sums, qu)
+  exceedances <- dat[sums > u,]
+  opt.out <- optim(par=log(start),fn=optim.score, dat=exceedances, model=model, p=p, u=u, control=list(fnscale=1,maxit=1500))
+  }
+  return(list(par=exp(opt.out$par), convergence=opt.out$convergence, val=opt.out$val))
 }

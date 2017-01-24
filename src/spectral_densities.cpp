@@ -10,7 +10,7 @@ using namespace Rcpp;
 //' @param transform logical indicating whether parameters are on the log scale. Default to \code{TRUE}
 //'
 //' @details The function is provided as a wrapper and takes parameters on the log scale for \eqn{\alpha} (\eqn{\rho}).
-//' @return the log-density for the \code{n} sample
+//' @return the log-likelihood for the \code{n} sample
 // [[Rcpp::export(.dirspecdens)]]
 NumericVector dirspecdens(NumericVector param, NumericMatrix dat, int d, bool transform = true){
  //Containers for copies
@@ -32,7 +32,7 @@ NumericVector dirspecdens(NumericVector param, NumericMatrix dat, int d, bool tr
     alphavec = param[(seq_len(d)-1)];
   }
   //Check parameter inputs are not aberrant
-  if(is_true(any(alphavec>50)) || is_true(any(alphavec<0)) || rho[0]<0 || rho[0]>50){
+  if(is_true(any(alphavec>100)) || is_true(any(alphavec<0)) || rho[0]<0 || rho[0]>50){
     return(NumericVector::create(-1e10));
   }
   //Container for result
@@ -41,7 +41,7 @@ NumericVector dirspecdens(NumericVector param, NumericMatrix dat, int d, bool tr
   NumericVector alpha = NumericVector::create(sum(alphavec));
   //Test for dimension match
   if(d != dat.ncol()){
-    Rcpp::stop("Invalid argument; dimensions of alpha vector and dat do not match");
+    Rcpp::stop("Invalid argument; input matrix should be such that the row of the d-columns sums to one.");
   }
   NumericVector ckons =  lgamma(alphavec+rho[0])-lgamma(alphavec);
   //Loop over data entries
@@ -67,7 +67,7 @@ NumericVector dirspecdens(NumericVector param, NumericMatrix dat, int d, bool tr
 //' @param transform logical indicating whether parameters are on the log scale. Default to \code{TRUE}
 //'
 //' @details The function is provided as a wrapper and takes parameters on the log scale for \eqn{\alpha} and \eqn{\rho}.
-//' @return the log-density for the \code{n} sample
+//' @return the log-likelihood for the \code{n} sample
 // [[Rcpp::export(.negdirspecdens)]]
 NumericVector negdirspecdens(NumericVector param, NumericMatrix dat, int d, bool transform = true){
   //Containers for copies
@@ -92,7 +92,7 @@ NumericVector negdirspecdens(NumericVector param, NumericMatrix dat, int d, bool
     alphavec = param[(seq_len(d)-1)];
   }
   //Check that transformed input makes sense
-  if(is_true(any(alphavec>50)) || is_true(any(alphavec<=rho[0])) || rho[0]<0 || rho[0]>50){
+  if(is_true(any(alphavec>100)) || is_true(any(alphavec<=rho[0])) || rho[0]<0 || rho[0]>50){
     return(NumericVector::create(-1e10));
   }
   //Container for result
@@ -126,7 +126,7 @@ NumericVector negdirspecdens(NumericVector param, NumericMatrix dat, int d, bool
 //' @param param vector containing the parameters \eqn{\alpha}.
 //' @param dat matrix of pseudo-dat, of dimension \eqn{d}
 //' @param transform logical indicating whether parameters are on the log scale. Default to \code{TRUE}
-//' @return the value of the log spectral density for a sample of size \code{n}
+//' @return the value of the log likelihood for a sample of size \code{n}
 // [[Rcpp::export(.ctspecdens)]]
 NumericVector ctspecdens(NumericVector param, NumericMatrix dat, bool transform = true){
   int d = param.size();

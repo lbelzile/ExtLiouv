@@ -2,7 +2,7 @@
 % Please edit documentation in R/fitcomposite.R
 \name{composite_pot_startvals}
 \alias{composite_pot_startvals}
-\title{Starting values for multivariate peaks-over-threshold via pairwise likelihood methods}
+\title{Starting values for multivariate peaks-over-threshold via pairwise composite likelihood methods}
 \usage{
 composite_pot_startvals(x, u = NULL, model, sym = FALSE, cscale = FALSE,
   cshape = FALSE, transform = FALSE)
